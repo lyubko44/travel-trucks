@@ -1,0 +1,33 @@
+.headerContainer {
+  position: sticky;
+  top: 0;
+  left: 0;
+  z-index: 2;
+  width: 1440px;
+  align-items: center;
+  border-bottom: 1px solid var(--badges);
+  padding: 24px 64px;
+  background: var(--inputs);
+  display: flex;
+  box-sizing: border-box;
+}
+
+.link {
+  text-decoration: none;
+  font-weight: 500;
+  font-size: 16px;
+  line-height: 150%;
+  text-align: center;
+  color: var(--main);
+}
+
+.active {
+  color: red;
+}
+
+.nav {
+  display: flex;
+  gap: 92px;
+
+  align-items: center;
+}

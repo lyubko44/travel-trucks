@@ -1,0 +1,46 @@
+.homeContainer {
+  padding-top: 264px;
+  padding-left: 64px;
+  background-image: url("../../assets/bg.jpg");
+  background-repeat: no-repeat;
+  background-size: cover;
+  width: 1440px;
+  height: 696px;
+  box-sizing: border-box;
+}
+
+.homeHeading {
+  font-family: var(--font-family);
+  font-weight: 600;
+  font-size: 48px;
+  line-height: 67%;
+  color: var(--inputs);
+  margin-bottom: 16px;
+}
+
+.homeSlogan {
+  font-family: var(--font-family);
+  font-weight: 600;
+  font-size: 24px;
+  line-height: 133%;
+  color: var(--inputs);
+  margin-bottom: 40px;
+}
+
+.homeBtn {
+  border: none;
+  border-radius: 200px;
+  padding: 16px 48.5px;
+  width: 173px;
+  background: var(--button);
+  font-family: "Inter", sans-serif;
+  font-weight: 500;
+  font-size: 16px;
+  line-height: 1.5;
+  letter-spacing: -0.01em;
+  color: var(--white);
+}
+.homeBtn:hover {
+  border-radius: 200px;
+  background: var(--Button-Hover, #d84343);
+}
