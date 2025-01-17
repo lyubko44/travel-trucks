@@ -1,0 +1,160 @@
+.campersContainer {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.iconMap {
+    margin-right: 4px;
+}
+
+.locationContainer {
+    display: flex;
+    align-items: center;
+}
+
+.description {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.favorite-btn {
+    background: none;
+    border: none;
+    font-size: 24px;
+    cursor: pointer;
+    top: 10px;
+    right: 10px;
+}
+
+.favorite-active {
+    fill: var(--button);
+}
+
+.cardList {
+    display: flex;
+    gap: 32px;
+    flex-direction: column;
+}
+
+.cardItem {
+    box-sizing: border-box;
+    width: 888px;
+    display: flex;
+    gap: 24px;
+    padding: 24px;
+    border: 1px solid var(--gray-light);
+    border-radius: 20px;
+}
+
+.cardPhoto {
+    height: 320px;
+    object-fit: cover;
+    border-radius: 10px;
+}
+
+.cardDetailsContainer {
+    width: 524px;
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+}
+
+.cardDetailsTitle {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 8px;
+}
+
+.cardPriceAndFavourite {
+    display: flex;
+    gap: 12px;
+}
+
+.cardName,
+.cardPrice {
+    font-family: var(--font-family);
+    font-weight: 600;
+    font-size: 24px;
+    line-height: 133%;
+    color: var(--main);
+}
+
+.ratingContainer {
+    display: flex;
+    gap: 16px;
+}
+
+.ratingAndStarContainer {
+    display: flex;
+    text-decoration: none;
+    align-items: center;
+}
+
+.star {
+    --color1: var(--rating);
+    margin-right: 4px;
+}
+
+.cardDetails {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+}
+
+.cardDetailsItem {
+    border-radius: 100px;
+    padding: 12px 18px;
+    max-width: 143px;
+    background-color: var(--badges);
+    display: flex;
+    align-items: center;
+    gap: 3px;
+    font-weight: 500;
+    font-size: 16px;
+    line-height: 1.5;
+    color: var(--main);
+    text-transform: capitalize;
+}
+
+.showMoreBtn {
+    border: none;
+    border-radius: 200px;
+    padding: 16px 0;
+    width: 166px;
+    background-color: var(--button);
+    font-family: "Inter", sans-serif;
+    font-weight: 500;
+    font-size: 16px;
+    line-height: 1.5;
+    letter-spacing: -0.01em;
+    color: var(--white);
+    transition: 250ms background-color cubic-bezier(0.075, 0.82, 0.165, 1);
+}
+
+.showMoreBtn:hover {
+    background-color: var(--button-hover);
+}
+
+.loadMoreBtn {
+    border: none;
+    padding: 16px 0;
+    background-color: transparent;
+    width: 145px;
+    border: 1px solid var(--gray-light);
+    border-radius: 200px;
+    font-family: "Inter", sans-serif;
+    font-weight: 500;
+    font-size: 16px;
+    line-height: 1.5;
+    letter-spacing: -0.01em;
+    color: var(--main);
+    margin-top: 40px;
+    transition: 250ms border-color cubic-bezier(0.075, 0.82, 0.165, 1);
+}
+
+.loadMoreBtn:hover {
+    border-color: var(--button-hover);
+}
