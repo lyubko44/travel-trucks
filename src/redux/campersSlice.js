@@ -1,73 +1,75 @@
-import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
-import axios from 'axios';
+import {createSlice} from "@reduxjs/toolkit";
+import {fetchCampers} from "./campersOperations.js";
 
 const initialState = {
-    campers: [],
-    filteredCampers: [],
-    visibleItems: 0,
-    isLoading: false,
-    error: null,
+    campers: {
+        items: [],
+        loading: false,
+        error: null,
+        visibleItems: 4,
+    },
+    favorites: JSON.parse(localStorage.getItem("favorites")) || [],
 };
 
-export const fetchCampers = createAsyncThunk('campers/fetchCampers', async () => {
-    const response = await axios.get('https://66b1f8e71ca8ad33d4f5f63e.mockapi.io/campers');
-    return Array.isArray(response.data) ? response.data : []; // Ensure this returns an array
-});
-
 const campersSlice = createSlice({
-    name: 'campers',
-    initialState,
+    name: "campers",
+    initialState: initialState,
     reducers: {
-        filterCampers: (state, action) => {
-            const { location, selectedType, selectedFeatures } = action.payload;
-            state.filteredCampers = state.campers.filter(camper => {
-                return (
-                    (!location || camper.location.includes(location)) &&
-                    (!selectedType || camper.type === selectedType) &&
-                    selectedFeatures.every(feature => camper.features.includes(feature))
-                );
-            });
-        },
-        toggleFavorite: (state, action) => {
-            const camper = state.campers.find(camper => camper.id === action.payload);
-            if (camper) {
-                camper.isFavorite = !camper.isFavorite;
-            }
-        },
-        resetVisibleItems: (state) => {
-            state.visibleItems = 0; // Reset visible items to initial state
+        clearCampers: (state) => {
+            state.campers.items = [];
+            state.campers.loading = false;
+            state.campers.error = null;
         },
         loadMoreCampers: (state) => {
-            state.visibleItems += 10; // Increase the number of visible items by 10
+            state.campers.visibleItems += 3;
+        },
+        resetVisibleItems: (state) => {
+            state.campers.visibleItems = 4;
+        },
+        addToFavorites: (state, action) => {
+            if (!state.favorites.some((fav) => fav.id === action.payload.id)) {
+                state.favorites.push(action.payload);
+                localStorage.setItem("favorites", JSON.stringify(state.favorites));
+            }
         },
         removeFromFavorites: (state, action) => {
-            const camper = state.campers.find(camper => camper.id === action.payload);
-            if (camper) {
-                camper.isFavorite = false;
-            }
+            state.favorites = state.favorites.filter(
+                (favCamper) => favCamper.id !== action.payload.id
+            );
+            localStorage.setItem("favorites", JSON.stringify(state.favorites));
         },
     },
     extraReducers: (builder) => {
         builder
             .addCase(fetchCampers.pending, (state) => {
-                state.isLoading = true;
-                state.error = null;
+                state.campers.loading = true;
             })
             .addCase(fetchCampers.fulfilled, (state, action) => {
-                state.isLoading = false;
-                state.campers = action.payload; // Ensure this is an array
-                state.filteredCampers = action.payload;
+                state.campers.loading = false;
+                state.campers.error = null;
+                state.campers.items = action.payload;
             })
             .addCase(fetchCampers.rejected, (state, action) => {
-                state.isLoading = false;
-                state.error = action.error.message;
+                state.campers.loading = false;
+                state.campers.error = action.payload;
             });
     },
 });
 
-export const { filterCampers, toggleFavorite, resetVisibleItems, loadMoreCampers, removeFromFavorites } = campersSlice.actions;
+export const {
+    clearCampers,
+    loadMoreCampers,
+    resetVisibleItems,
+    addToFavorites,
+    removeFromFavorites,
+} = campersSlice.actions;
 
-export default campersSlice.reducer;
+export const campersReducer = campersSlice.reducer;
 
-export const selectFilteredCampers = (state) => state.campers.filteredCampers;
-export const selectLoading = (state) => state.campers.isLoading;
+export const selectCampers = (state) => state.campersData.campers.items;
+export const selectVisibleCampers = (state) => state.campersData.campers.visibleItems;
+export const selectFavorites = (state) => state.campersData.favorites || [];
+export const selectLoading = (state) => state.campersData.campers.loading;
+export const selectError = (state) => state.campersData.campers.error;
+
+export default campersSlice;

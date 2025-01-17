@@ -1,71 +1,204 @@
-import { useState } from 'react';
-import css from './Filter.module.css';
+import { useState } from "react";
+import css from "./Filter.module.css";
+import { useDispatch } from "react-redux";
+import { clearFilters, updateFilters } from "../../redux/filterSlice.js";
+import { resetVisibleItems } from "../../redux/campersSlice.js";
+import sprite from "../../assets/sprite.svg";
 
-const Filter = ({ onFilterChange }) => {
-    const [location, setLocation] = useState('');
-    const [selectedType, setSelectedType] = useState('');
-    const [selectedFeatures, setSelectedFeatures] = useState([]);
+const Filter = () => {
+    const dispatch = useDispatch();
+    const [localFilters, setLocalFilters] = useState({
+        location: "",
+        AC: false,
+        transmission: "",
+        Kitchen: false,
+        TV: false,
+        Bathroom: false,
+        // microwave: false,
+        // gas: false,
+        // radio: false,
+        refrigerator: false,
+        form: "",
+    });
+
+    const handleFilterChange = (filter) => {
+        setLocalFilters((prev) => {
+            const updatedFilters = {
+                ...prev,
+                [filter]: !prev[filter],
+            };
+            return updatedFilters;
+        });
+    };
 
     const handleLocationChange = (e) => {
-        setLocation(e.target.value);
+        setLocalFilters((prev) => ({
+            ...prev,
+            location: e.target.value,
+        }));
     };
 
-    const handleTypeChange = (e) => {
-        setSelectedType(e.target.value);
+    const handleTransmissionChange = (transmission) => {
+        setLocalFilters((prev) => ({
+            ...prev,
+            transmission: prev.transmission === transmission ? "" : transmission,
+        }));
     };
 
-    const handleFeatureToggle = (feature) => {
-        setSelectedFeatures((prevFeatures) =>
-            prevFeatures.includes(feature)
-                ? prevFeatures.filter((f) => f !== feature)
-                : [...prevFeatures, feature]
-        );
+    const handleFormChange = (form) => {
+        setLocalFilters((prev) => ({
+            ...prev,
+            form: prev.form === form ? "" : form,
+        }));
     };
 
-    const handleSearch = () => {
-        onFilterChange({ location, selectedType, selectedFeatures });
+    const handleSearchClick = () => {
+        setLocalFilters({});
+        dispatch(clearFilters());
+        dispatch(updateFilters(localFilters));
+        dispatch(resetVisibleItems());
     };
 
     return (
-        <div className={css.filters}>
+        <aside className={css.filters}>
             <div className={css.location}>
-                <label className={css.locationLabel} htmlFor="location">Location</label>
+                <label htmlFor="location" className={css.locationLabel}>
+                    Location
+                </label>
                 <input
                     type="text"
                     id="location"
                     className={css.locationContent}
-                    value={location}
+                    value={localFilters.location || ""}
+                    placeholder="City"
                     onChange={handleLocationChange}
                 />
-                <svg className={css.iconMap} viewBox="0 0 24 24">
-                    <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5S10.62 6.5 12 6.5s2.5 1.12 2.5 2.5S13.38 11.5 12 11.5z" />
+                <svg className={css.iconMap} width={20} height={20}>
+                    <use href={`${sprite}#icon-Map`} />
                 </svg>
             </div>
-            <div className={css.filterGroup}>
-                <h3 className={css.filterGroupTitle}>Type</h3>
-                <select value={selectedType} onChange={handleTypeChange}>
-                    <option value="">Select Type</option>
-                    <option value="van">Van</option>
-                    <option value="motorhome">Motorhome</option>
-                    <option value="trailer">Trailer</option>
-                </select>
-            </div>
-            <div className={css.filterGroup}>
-                <h3 className={css.filterGroupTitle}>Features</h3>
-                <div className={css.filterGroupList}>
-                    {['AC', 'kitchen', 'bathroom', 'TV', 'radio', 'refrigerator', 'microwave', 'gas', 'water'].map((feature) => (
-                        <button
-                            key={feature}
-                            className={`${css.filterBtn} ${selectedFeatures.includes(feature) ? 'active' : ''}`}
-                            onClick={() => handleFeatureToggle(feature)}
-                        >
-                            {feature}
-                        </button>
-                    ))}
+            <div>
+                <h2 className={css.filterTitle}>Filters</h2>
+                <div>
+                    <h3 className={css.filterGroupTitle}>Vehicle equipment</h3>
+                    <ul className={css.filterGroupList}>
+                        <li>
+                            <button
+                                className={`${css.filterBtn} ${
+                                    localFilters.AC ? css.active : ""
+                                }`}
+                                onClick={() => handleFilterChange("AC")}
+                            >
+                                <svg className={css.svgIconPlus} width={32} height={32}>
+                                    <use href={`${sprite}#icon-wind`} />
+                                </svg>
+                                AC
+                            </button>
+                        </li>
+                        <li>
+                            <button
+                                className={`${css.filterBtn} ${
+                                    localFilters.transmission === "automatic" ? css.active : ""
+                                }`}
+                                onClick={() => handleTransmissionChange("automatic")}
+                            >
+                                <svg className={css.svgIconPlus} width={32} height={32}>
+                                    <use href={`${sprite}#icon-diagram`} />
+                                </svg>
+                                Automatic
+                            </button>
+                        </li>
+                        <li>
+                            <button
+                                className={`${css.filterBtn} ${
+                                    localFilters.Kitchen ? css.active : ""
+                                }`}
+                                onClick={() => handleFilterChange("Kitchen")}
+                            >
+                                <svg className={css.svgIconPlus} width={32} height={32}>
+                                    <use href={`${sprite}#icon-cup-hot`} />
+                                </svg>
+                                Kitchen
+                            </button>
+                        </li>
+                        <li>
+                            <button
+                                className={`${css.filterBtn} ${
+                                    localFilters.TV ? css.active : ""
+                                }`}
+                                onClick={() => handleFilterChange("TV")}
+                            >
+                                <svg className={css.svgIconPlus} width={32} height={32}>
+                                    <use href={`${sprite}#icon-tv`} />
+                                </svg>
+                                TV
+                            </button>
+                        </li>
+                        <li>
+                            <button
+                                className={`${css.filterBtn} ${
+                                    localFilters.Bathroom ? css.active : ""
+                                }`}
+                                onClick={() => handleFilterChange("Bathroom")}
+                            >
+                                <svg className={css.svgIconPlus} width={32} height={32}>
+                                    <use href={`${sprite}#mdi--truck-shower`} />
+                                </svg>
+                                Bathroom
+                            </button>
+                        </li>
+                    </ul>
+                </div>
+                <div>
+                    <h3 className={css.filterFormTitle}>Vehicle type</h3>
+                    <ul className={css.filterGroupList}>
+                        <li>
+                            <button
+                                className={`${css.filterBtn} ${
+                                    localFilters.form === "van" ? css.active : ""
+                                }`}
+                                onClick={() => handleFormChange("van")}
+                            >
+                                <svg className={css.svgIconPlus} width={32} height={32}>
+                                    <use href={`${sprite}#icon-bi_grid-1x2`} />
+                                </svg>
+                                Van
+                            </button>
+                        </li>
+                        <li>
+                            <button
+                                className={`${css.filterBtn} ${
+                                    localFilters.form === "fullyIntegrated" ? css.active : ""
+                                }`}
+                                onClick={() => handleFormChange("fullyIntegrated")}
+                            >
+                                <svg className={css.svgIconPlus} width={32} height={32}>
+                                    <use href={`${sprite}#icon-bi_grid`} />
+                                </svg>
+                                Fully Integrated
+                            </button>
+                        </li>
+                        <li>
+                            <button
+                                className={`${css.filterBtn} ${
+                                    localFilters.form === "alcove" ? css.active : ""
+                                }`}
+                                onClick={() => handleFormChange("alcove")}
+                            >
+                                <svg className={css.svgIconPlus} width={32} height={32}>
+                                    <use href={`${sprite}#icon-bi_grid-3x3-gap`} />
+                                </svg>
+                                Alcove
+                            </button>
+                        </li>
+                    </ul>
                 </div>
             </div>
-            <button className={css.searchBtn} onClick={handleSearch}>Search</button>
-        </div>
+
+            <button className={css.searchBtn} onClick={handleSearchClick}>
+                Search
+            </button>
+        </aside>
     );
 };
 

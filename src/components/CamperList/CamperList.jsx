@@ -1,14 +1,13 @@
-import PropTypes from "prop-types";
 import { Link, useLocation } from "react-router-dom";
 import styles from "./CamperList.module.css";
-import { toggleFavorite, removeFromFavorites, resetVisibleItems,} from "../../redux/campersSlice.js";
+import { addToFavorites, loadMoreCampers, removeFromFavorites, resetVisibleItems} from "../../redux/campersSlice.js";
 import { useDispatch, useSelector } from "react-redux";
-import { selectFavorites, selectVisibleCampers} from "../../redux/campersSelectors.js";
+import { selectFavorites, selectVisibleCampers} from "../../redux/campersSlice.js";
 import sprite from "../../assets/sprite.svg";
 import Feature from "../Feature/Feature";
 import { useEffect } from "react";
 
-const CamperList = ({ campers, onFavoriteToggle, onLoadMore, onViewDetails }) => {
+const CamperList = ({ campers }) => {
     const location = useLocation();
     const dispatch = useDispatch();
     const visibleItems = useSelector(selectVisibleCampers);
@@ -16,7 +15,7 @@ const CamperList = ({ campers, onFavoriteToggle, onLoadMore, onViewDetails }) =>
     const visibleCampers = campers.slice(0, visibleItems);
 
     useEffect(() => {
-        dispatch(resetVisibleItems()); // Reset state on initial load
+        dispatch(resetVisibleItems());
     }, [dispatch]);
 
     const handleFavoriteToggle = (camper) => {
@@ -27,12 +26,15 @@ const CamperList = ({ campers, onFavoriteToggle, onLoadMore, onViewDetails }) =>
         if (isFavorite) {
             dispatch(removeFromFavorites(camper));
         } else {
-            dispatch(toggleFavorite(camper));
+            dispatch(addToFavorites(camper));
         }
-        onFavoriteToggle(camper.id);
     };
 
     if (!campers) return <p>Loading campers...</p>;
+
+    const handleLoadMore = () => {
+        dispatch(loadMoreCampers());
+    };
 
     return (
         <main>
@@ -94,7 +96,7 @@ const CamperList = ({ campers, onFavoriteToggle, onLoadMore, onViewDetails }) =>
                                             to={`/catalog/${camper.id}`}
                                             state={{ from: location }}
                                         >
-                                            <button className={styles.showMoreBtn} onClick={() => onViewDetails(camper.id)}>Show more</button>
+                                            <button className={styles.showMoreBtn}>Show more</button>
                                         </Link>
                                     </div>
                                 </li>
@@ -102,35 +104,13 @@ const CamperList = ({ campers, onFavoriteToggle, onLoadMore, onViewDetails }) =>
                         })}
                 </ul>
                 {visibleItems < campers.length && (
-                    <button className={styles.loadMoreBtn} onClick={onLoadMore}>
+                    <button className={styles.loadMoreBtn} onClick={handleLoadMore}>
                         Load More
                     </button>
                 )}
             </div>
         </main>
     );
-};
-
-CamperList.propTypes = {
-    campers: PropTypes.arrayOf(
-        PropTypes.shape({
-            id: PropTypes.string.isRequired,
-            name: PropTypes.string.isRequired,
-            price: PropTypes.number.isRequired,
-            gallery: PropTypes.arrayOf(
-                PropTypes.shape({
-                    original: PropTypes.string.isRequired,
-                })
-            ).isRequired,
-            rating: PropTypes.number.isRequired,
-            reviews: PropTypes.arrayOf(PropTypes.object).isRequired,
-            location: PropTypes.string.isRequired,
-            description: PropTypes.string.isRequired,
-        })
-    ).isRequired,
-    onFavoriteToggle: PropTypes.func.isRequired,
-    onLoadMore: PropTypes.func.isRequired,
-    onViewDetails: PropTypes.func.isRequired,
 };
 
 export default CamperList;
