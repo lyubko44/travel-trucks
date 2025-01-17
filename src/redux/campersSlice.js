@@ -4,6 +4,7 @@ import axios from 'axios';
 const initialState = {
     campers: [],
     filteredCampers: [],
+    visibleItems: 0,
     isLoading: false,
     error: null,
 };
@@ -33,6 +34,18 @@ const campersSlice = createSlice({
                 camper.isFavorite = !camper.isFavorite;
             }
         },
+        resetVisibleItems: (state) => {
+            state.visibleItems = 0; // Reset visible items to initial state
+        },
+        loadMoreCampers: (state) => {
+            state.visibleItems += 10; // Increase the number of visible items by 10
+        },
+        removeFromFavorites: (state, action) => {
+            const camper = state.campers.find(camper => camper.id === action.payload);
+            if (camper) {
+                camper.isFavorite = false;
+            }
+        },
     },
     extraReducers: (builder) => {
         builder
@@ -52,9 +65,9 @@ const campersSlice = createSlice({
     },
 });
 
-export const { filterCampers, toggleFavorite } = campersSlice.actions;
+export const { filterCampers, toggleFavorite, resetVisibleItems, loadMoreCampers, removeFromFavorites } = campersSlice.actions;
+
+export default campersSlice.reducer;
 
 export const selectFilteredCampers = (state) => state.campers.filteredCampers;
 export const selectLoading = (state) => state.campers.isLoading;
-
-export default campersSlice.reducer;
