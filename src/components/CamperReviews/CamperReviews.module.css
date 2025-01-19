@@ -1,0 +1,45 @@
+.reviewsList {
+    padding-top: 12px;
+    display: flex;
+    flex-direction: column;
+    gap: 44px;
+}
+
+.reviewsAuthor {
+    margin-bottom: 4px;
+}
+
+.authorItem {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.authorContainer {
+    display: flex;
+    gap: 16px;
+    width: 172px;
+}
+
+.authorInitial {
+    border-radius: 60px;
+    width: 60px;
+    height: 60px;
+    background: var(--badges);
+    font-family: var(--font-family);
+    font-weight: 600;
+    font-size: 24px;
+    line-height: 133%;
+    color: var(--button);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.authorComment {
+    font-family: var(--font-family);
+    font-weight: 400;
+    font-size: 16px;
+    line-height: 150%;
+    color: var(--text);
+}

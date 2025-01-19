@@ -1,0 +1,7 @@
+.catalogContainer {
+    padding: 48px 64px 52px 64px;
+    display: flex;
+    gap: 64px;
+    box-sizing: border-box;
+    width: 1440px;
+}

@@ -1,0 +1,15 @@
+.ratingContainer {
+    display: inline-flex;
+    width: 96px;
+}
+
+.star {
+    width: 16px;
+    height: 16px;
+    --color1: var(--badges);
+    margin-right: 4px;
+}
+
+.filled {
+    --color1: var(--rating);
+}
