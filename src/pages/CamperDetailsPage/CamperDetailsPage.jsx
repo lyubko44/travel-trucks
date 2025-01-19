@@ -1,5 +1,5 @@
 import { useEffect, useState, Suspense } from "react";
-import {useParams, Outlet, useLocation, useNavigate, NavLink,} from "react-router-dom";
+import { useParams, Outlet, useLocation, useNavigate, NavLink } from "react-router-dom";
 import Loader from "../../components/Loader/Loader.jsx";
 import styles from "./CamperDetailsPage.module.css";
 import BookingForm from "../../components/BookingForm/BookingForm.jsx";
