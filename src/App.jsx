@@ -5,6 +5,7 @@ import CatalogPage from "./pages/CatalogPage/CatalogPage.jsx";
 import CamperDetailsPage from "./pages/CamperDetailsPage/CamperDetailsPage.jsx";
 import CamperFeatures from "./components/CamperFeatures/CamperFeatures.jsx";
 import CamperReviews from "./components/CamperReviews/CamperReviews.jsx";
+import NotFoundPage from "./pages/NotFoundPage/NotFoundPage.jsx";
 
 function App() {
     return (
@@ -17,6 +18,7 @@ function App() {
                     <Route path="features" element={<CamperFeatures />} />
                     <Route path="reviews" element={<CamperReviews />} />
                 </Route>
+                <Route path="*" element={<NotFoundPage />} />
             </Routes>
         </Router>
     );
